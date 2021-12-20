@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sales_invoice_cancel,sales.invoice.cancel,model_sales_invoice_cancel,,1,1,1,1
+access_sales_invoice_cancel_lines,sales.invoice.cancel.lines,model_sales_invoice_cancel_lines,,1,1,1,1
+access_cash_book_closing,cash.book.closing,model_cash_book_closing,,1,1,1,1
+access_cash_book_closing_line,cash.book.closing.line,model_cash_book_closing_line,,1,1,1,1
+access_cash_book_closing,cash.book.closing,model_cash_book_closing,,1,1,1,1
+access_expenses_disc,expenses.disc,model_expenses_disc,,1,1,1,1
+access_company_expenses_report,company.expenses.report,model_company_expenses_report,,1,1,1,1

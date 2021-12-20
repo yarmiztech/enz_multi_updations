@@ -1,0 +1,163 @@
+<odoo>
+    <record id="sales_invoice_cancel_tree" model="ir.ui.view">
+        <field name="name">sales.invoice.cancel.tree</field>
+        <field name="model">sales.invoice.cancel</field>
+        <field name="arch" type="xml">
+            <tree decoration-success="state == 'done'" decoration-muted="state == 'cancel'">
+                <field name="name"/>
+                <field name="create_date"/>
+                <field name="partner_id"/>
+                <field name="invoice_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="sales_sales_invoice_cancel" model="ir.ui.view">
+        <field name="name">Sales Invoice Cancel</field>
+        <field name="model">sales.invoice.cancel</field>
+        <field name="arch" type="xml">
+            <form string="Sales Report">
+                <header>
+                     <button name="action_cancel_create" class="oe_highlight" states="draft" string="Cancel and Create New"
+                            type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft"/>
+
+                </header>
+
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="object" name="action_view_invoices"
+                                class="oe_stat_button"
+                                icon="fa-pencil-square-o" attrs="{'invisible':[('new_invoices_count', '=', 0)]}">
+                            <field name="new_invoices_count" widget="statinfo" string="Invoice"/>
+                        </button>
+<!--                        <button type="object" name="action_view_re_invoice_id"-->
+<!--                                class="oe_stat_button"-->
+<!--                                icon="fa-credit-card" attrs="{'invisible':[('re_invoice_id_count', '=', 0)]}">-->
+<!--                            <field name="re_invoice_id_count" widget="statinfo" string="Credit Note"/>-->
+<!--                            <field name='re_invoice_id' invisible="1"/>-->
+<!--                        </button>-->
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+
+                            <field name="partner_id" required="1"/>
+                            <field name="invoice_id" required="1"/>
+                            <field name="branch_id"/>
+                            <field name="vehicle"/>
+                            <field name="complete_address"/>
+
+                        </group>
+                        <group>
+                            <field name="create_date"/>
+                            <field name="company_id"/>
+                            <field name="user_id"/>
+                            <field name="vat"/>
+
+
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="cancel Lines Lines">
+                            <field name="sales_return_lines">
+                                <tree editable="bottom">
+                                    <field name="est_line_id" invisible="1"/>
+                                    <field name="product_id"/>
+                                    <field name="product_uom_qty"/>
+                                    <field name="price_unit"/>
+                                    <field name="tax_ids" widget="many2many_tags" />
+                                    <field name="sub_total"/>
+                                    <field name="invoice_line_ids" invisible="1"/>
+
+                                </tree>
+                            </field>
+                              <div>
+                            <group>
+                                <group class="oe_subtotal_footer oe_right" cols="6">
+                                    <field name="company_currency_id" invisible="1" />
+                                    <div class="o_td_label"></div>
+                                    <field name="amount_total" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
+                                    <div class="o_td_label"></div>
+                                    <field name="tax_amount" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
+                                     <div class="o_td_label"></div>
+                                    <field name="grand_amount" widget="monetary" options="{'currency_field': 'company_currency_id'}"/>
+                                </group>
+
+                            </group>
+                        </div>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="actions_sales_invoice_cancel" model="ir.actions.act_window">
+        <field name="name">Sales Invoice Cancel</field>
+        <field name="res_model">sales.invoice.cancel</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to create a new .
+            </p>
+        </field>
+    </record>
+
+    <menuitem name="Sales Invoice Cancel"
+              id="menu_sales_invoice_cancel" sequence="5"
+              parent="ezp_estimate.menu_estimate_main"
+              action="actions_sales_invoice_cancel"/>
+
+
+
+     <record id="exec_collection_ches_form" model="ir.ui.view">
+        <field name="name">executive.cheque.collection.form</field>
+        <field name="model">executive.cheque.collection</field>
+         <field name="inherit_id" ref="ezp_cash_collection.exec_collection_che_form"/>
+
+        <field name="arch" type="xml">
+                      <xpath expr="//field[@name='partner_invoices']/tree//field[@name='amount_total']" position="replace">
+                          <field name="amount_total" sum="TotalAmount"/>
+                      </xpath>
+                      <xpath expr="//field[@name='partner_invoices']/form//field[@name='amount_total']" position="after">
+                          <field name="char_amount_total"/>
+                      </xpath>
+                      <xpath expr="//field[@name='partner_invoices']/form//field[@name='amount_total']" position="replace">
+                          <field name="amount_total" invisible="1"/>
+                      </xpath>
+        </field>
+     </record>
+     <record id="exec_collection_forms_inherit" model="ir.ui.view">
+        <field name="name">executive.collection.form</field>
+        <field name="model">executive.collection</field>
+         <field name="inherit_id" ref="ezp_cash_collection.exec_collection_form"/>
+        <field name="arch" type="xml">
+                      <xpath expr="//field[@name='partner_invoices']/tree//field[@name='amount_total']" position="replace">
+                          <field name="amount_total" sum="TotalAmount"/>
+            </xpath>
+        </field>
+     </record>
+
+   <record id="invoice_form_cancel_inherit" model="ir.ui.view">
+            <field name="name">invoice.form.cancel.inherit</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_invoice_draft']" position="before">
+                    <button name="action_invoice_brothers_cancel" type="object" states="draft,open,in_payment,paid,cancel" string="Cancel Invoice"/>
+                </xpath>
+                 <xpath expr="//field[@name='date_due']" position="after">
+                        <field name="balance_invoice_qty"/>
+                 </xpath>
+            </field>
+        </record>
+
+</odoo>

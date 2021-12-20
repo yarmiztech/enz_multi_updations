@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<!--Adding a salary rule for loan-->
+	 <data noupdate="1">
+
+        <record id="seq_sales_invoice_cancel" model="ir.sequence">
+            <field name="name">sales.invoice.cancel</field>
+            <field name="code">sales.invoice.cancel</field>
+            <field name="prefix">INV/CCL/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+ <record id="seq_cash_to_bank" model="ir.sequence">
+            <field name="name">cash.to.bank</field>
+            <field name="code">cash.to.bank</field>
+            <field name="prefix">CSH/BK/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+<record id="seq_cash_book_closing" model="ir.sequence">
+            <field name="name">cash.book.closing</field>
+            <field name="code">cash.book.closing</field>
+            <field name="prefix">CSH/DAY/CLOSE</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+    </data>
+</odoo>

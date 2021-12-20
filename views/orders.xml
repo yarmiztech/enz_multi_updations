@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="estimate_orders_view_up" model="ir.ui.view">
+        <field name="name">estimate.orders.form</field>
+        <field name="model">estimate.orders</field>
+        <field name="inherit_id" ref="ezp_estimate.estimate_orders_view1"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='ship_to']" position="after">
+                <field name="estimate_user_id"/>
+            </xpath>
+            <xpath expr="//field[@name='order_lines']/form//field[@name='quantity']" position="after">
+            <field name="char_quantity"/>
+            </xpath>
+            <xpath expr="//field[@name='order_lines']/form//field[@name='quantity']" position="replace">
+            <field name="quantity" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='order_lines']/form//field[@name='price']" position="replace">
+            <field name="price" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='order_lines']/form//field[@name='quantity']" position="after">
+            <field name="char_price"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="today_cheques_form_own_up" model="ir.ui.view">
+        <field name="name">today.cheques.form</field>
+        <field name="model">today.cheques</field>
+        <field name="inherit_id" ref="ezp_cash_collection.today_cheques_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='today_lines']/tree//field[@name='account_id']" position="before">
+                <field name="debit_mandory"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="today_cheques_form_update2" model="ir.ui.view">
+        <field name="name">today.cheques.form</field>
+        <field name="model">today.cheques</field>
+        <field name="inherit_id" ref="enz_mc_owner.today_cheques_form_own"/>
+        <field name="arch" type="xml">
+            <!--            <xpath expr="//field[@name='today_lines']/tree//field[@name='account_id']" position="replace">-->
+            <!--                <field name="account_id" invisible="1"/>-->
+            <!--            </xpath>-->
+            <xpath expr="//field[@name='today_lines']/tree//field[@name='debited_account']" position="replace">
+                <field name="debited_account" attrs="{'required': [('debit_mandory','=',True)]}"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="neft_rtgs_collection_form_upe" model="ir.ui.view">
+        <field name="name">neft.rtgs.collection.form</field>
+        <field name="model">neft.rtgs.collection</field>
+        <field name="inherit_id" ref="enz_mc_owner.neft_rtgs_collection_form_inh"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='from_account']" position="replace">
+                <!--                <field name="journal_id" attrs="{'invisible': [('partner_type','!=','customer')]}"/>-->
+                <field name="from_account" invisible="1"/>
+            </xpath>
+
+        </field>
+    </record>
+    <record id="neft_rtgs_collection_up" model="ir.ui.view">
+        <field name="name">neft.rtgs.collection.form</field>
+        <field name="model">neft.rtgs.collection</field>
+        <field name="inherit_id" ref="ezp_cash_collection.neft_rtgs_collection_form"/>
+        <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_confirm']" position="after">
+                <button name="action_reverse" type="object" groups="ezp_cash_collection.group_cash_manager1" string="Reverse Entry" states="validate" class="oe_highlight" id="approve_cons"/>
+
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="neft_rtgs_collection_form_up" model="ir.ui.view">
+        <field name="name">neft.rtgs.collection.form</field>
+        <field name="model">neft.rtgs.collection</field>
+        <field name="inherit_id" ref="ezp_cash_collection.neft_rtgs_collection_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='payment_method_id']" position="replace">
+                <!--                <field name="journal_id" attrs="{'invisible': [('partner_type','!=','customer')]}"/>-->
+                <field name="payment_method_id" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="freight_discouting_forms_upd" model="ir.ui.view">
+        <field name="name">freight.disc.form</field>
+        <field name="model">freight.disc</field>
+        <field name="inherit_id" ref="ezp_cash_collection.freight_discouting_forms"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='freight_lines']/tree//field[@name='account_id']" position="replace">
+                <field name="account_id" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='freight_lines']/tree//field[@name='partner_id']" position="before">
+                <field name="reverse" attrs="{'column_invisible': [('parent.state', 'not in',['done', 'reverse'])]}"/>
+            </xpath>
+            <xpath expr="//button[@name='action_post']" position="after">
+                <button name="action_reverse" type="object" groups="ezp_cash_collection.group_cash_manager1" string="Reverse Entry" states="done,reverse" class="oe_highlight" id="approve_cons"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="expenses_disc_forms_up" model="ir.ui.view">
+        <field name="name">expenses.disc.form</field>
+        <field name="model">expenses.disc</field>
+        <field name="inherit_id" ref="ezp_cash_collection.expenses_disc_forms"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='freight_lines']/tree//field[@name='account_id']" position="replace">
+                <field name="account_id" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='freight_lines']/tree//field[@name='reason']" position="before">
+                <field name="reverse" attrs="{'column_invisible': [('parent.state', 'not in',['done', 'reverse'])]}"/>
+            </xpath>
+            <xpath expr="//button[@name='action_post']" position="after">
+                <button name="action_reverse" type="object" groups="ezp_cash_collection.group_cash_manager1" string="Reverse Entry" states="done,reverse" class="oe_highlight" id="approve_cons"/>
+
+            </xpath>
+        </field>
+    </record>
+    <record id="internal_amount_transfer_forms_up" model="ir.ui.view">
+        <field name="name">internal.amount.transfer.form</field>
+        <field name="model">internal.amount.transfer</field>
+        <field name="inherit_id" ref="ezp_cash_collection.internal_amount_transfer_forms"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='account_id']" position="replace">
+                <field name="account_id" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='to_account']" position="replace">
+                <field name="to_account" invisible="1"/>
+            </xpath>
+             <xpath expr="//field[@name='freight_lines']/tree//field[@name='journal_id']" position="before">
+                <field name="reverse" attrs="{'column_invisible': [('parent.state', 'not in',['done', 'reverse'])]}"/>
+            </xpath>
+            <xpath expr="//button[@name='action_post']" position="after">
+                <button name="action_reverse" type="object" groups="ezp_cash_collection.group_cash_manager1" string="Reverse Entry" states="done,reverse" class="oe_highlight" id="approve_cons"/>
+
+            </xpath>
+        </field>
+    </record>
+
+    <record id="amount_withdraw_form_up" model="ir.ui.view">
+        <field name="name">amount.withdraw.form</field>
+        <field name="model">amount.withdraw</field>
+        <field name="inherit_id" ref="ezp_cash_collection.amount_withdraw_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='type']" position="replace">
+                <field name="type" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='account_id']" position="replace">
+                <field name="account_id" invisible="1"/>
+            </xpath>
+              <xpath expr="//button[@name='action_confirm']" position="after">
+                <button name="action_reverse" type="object" groups="ezp_cash_collection.group_cash_manager1" string="Reverse Entry" states="done" class="oe_highlight" id="approve_cons"/>
+
+            </xpath>
+        </field>
+    </record>
+
+    <record id="amount_withdraw_form_updation" model="ir.ui.view">
+        <field name="name">amount.withdraw.form</field>
+        <field name="model">amount.withdraw</field>
+        <field name="inherit_id" ref="enz_mc_owner.amount_withdraw_form_inherit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='journal_company_id']" position="replace">
+                <field name="journal_company_id" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="cash_to_bank_form" model="ir.ui.view">
+        <field name="name">cash.to.bank.form</field>
+        <field name="model">cash.to.bank</field>
+        <field name="inherit_id" ref="enz_mc_owner.cash_to_bank_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='to_account_id']" position="replace">
+                <field name="to_account_id" invisible="1"/>
+            </xpath>
+            <xpath expr="//button[@name='action_confirm']" position="after">
+                <button name="action_reverse" type="object" groups="ezp_cash_collection.group_cash_manager1" string="Reverse Entry" states="done" class="oe_highlight" id="approve_cons"/>
+
+            </xpath>
+        </field>
+    </record>
+
+     <record id="cashier_update_form" model="ir.ui.view">
+        <field name="name">cashier.direct.collection.form</field>
+        <field name="model">cashier.direct.collection</field>
+        <field name="inherit_id" ref="ezp_cash_collection.cashier_direct_collection_form"/>
+        <field name="arch" type="xml">
+                 <xpath expr="//button[@name='action_confirm']" position="after">
+                <button name="action_reverse" type="object" groups="ezp_cash_collection.group_cash_manager1" string="Reverse Entry" states="validate,reverse" class="oe_highlight" id="approve_cons"/>
+
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="before">
+             <field name="reverse" attrs="{'column_invisible': [('parent.state', 'not in',['validate', 'reverse'])]}"/>
+            </xpath>
+        </field>
+     </record>
+
+    <record id="exec_collection_form_owner" model="ir.ui.view">
+        <field name="name">executive.collection.form</field>
+        <field name="model">executive.collection</field>
+        <field name="inherit_id" ref="ezp_cash_collection.exec_collection_form"/>
+        <field name="arch" type="xml">
+          <xpath expr="//button[@name='action_confirm']" position="after">
+                <button name="action_reverse" type="object" groups="ezp_cash_collection.group_cash_manager1" string="Reverse Entry" states="validate,reverse" class="oe_highlight" id="approve_cons"/>
+
+            </xpath>
+            <xpath expr="//field[@name='partner_invoices']/tree//field[@name='partner_id']" position="before">
+
+                <field name="reverse" attrs="{'column_invisible': [('parent.state', 'not in',['validate', 'reverse'])]}" />
+
+            </xpath>
+            <xpath expr="//field[@name='partner_invoices']/tree//field[@name='amount_total']" position="before">
+
+                <field name="ar_amount_total" invisible="1" />
+
+            </xpath>
+<!--            <xpath expr="//field[@name='partner_invoices']/kanban//field[@name='amount_total']" position="before">-->
+<!--                <field name="ar_amount_total"  />-->
+<!--            </xpath>-->
+        </field>
+    </record>
+
+
+    <record id="fund_transfer_companies_forms_up" model="ir.ui.view">
+        <field name="name">fund.transfer.companies.form</field>
+        <field name="model">fund.transfer.companies</field>
+    <field name="inherit_id" ref="enz_mc_owner.fund_transfer_companies_forms"/>
+        <field name="arch" type="xml">
+                 <xpath expr="//field[@name='fund_lines']/tree//field[@name='from_acc_company']" position="before">
+                <field name="reverse" attrs="{'column_invisible': [('parent.state', 'not in',['send', 'reverse'])]}"/>
+            </xpath>
+                      <xpath expr="//button[@name='action_post']" position="after">
+                           <button name="action_reverse" type="object" groups="ezp_cash_collection.group_cash_manager1" string="Reverse Entry" states="send,reverse" class="oe_highlight" id="approve_cons"/>
+
+                      </xpath>
+
+        </field>
+    </record>
+
+
+     <record id="ezp_estimate_updationss" model="ir.ui.view">
+        <field name="name">sale.estimate.form</field>
+        <field name="model">sale.estimate</field>
+    <field name="inherit_id" ref="ezp_estimate.sale_estimates_view"/>
+        <field name="arch" type="xml">
+    <xpath expr="//field[@name='estimate_ids']/form//field[@name='company_ids']" position="replace">
+        <field name="company_ids" widget="many2many_tags" options="{'no_create': True}"/>
+
+    </xpath>
+        </field>
+     </record>
+
+     <record id="today_cheques_form_updations" model="ir.ui.view">
+        <field name="name">today.cheques.form</field>
+        <field name="model">today.cheques</field>
+        <field name="inherit_id" ref="ezp_cash_collection.today_cheques_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='today_lines']/tree//field[@name='amount_total']" position="replace">
+                <field name="amount_total" sum="AMT"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="exec_collection_updations" model="ir.ui.view">
+        <field name="name">executive.cheque.collection.form</field>
+        <field name="model">executive.cheque.collection</field>
+         <field name="inherit_id" ref="ezp_cash_collection.exec_collection_che_form"/>
+        <field name="arch" type="xml">
+                      <xpath expr="//field[@name='payment_date']" position="after">
+                          <field name="sum_amount"/>
+            </xpath>
+        </field>
+     </record>
+
+
+        <record id="ezp_cash_collection.exec_collection_form" model="ir.ui.view">
+        <field name="name">executive.collection.form</field>
+        <field name="model">executive.collection</field>
+        <field name="arch" type="xml">
+            <form string="Executive Collection">
+                <header>
+                    <button name="action_exe_confirm" type="object"
+                            string="Collected" attrs="{'invisible': [('collected', '!=', False)]}"
+                            class="oe_highlight" id="approve_con"/>
+                    <button name="action_confirm"
+                            type="object" groups="ezp_cash_collection.group_cash_manager1"
+                            string="Confirm" attrs="{'invisible': [('state', '!=', 'draft')]}"
+                            class="oe_highlight" id="approve_con"/>
+                    <button name="action_cancel"
+                            type="object"
+                            string="Cancel" attrs="{'invisible': [('state', '!=', 'draft')]}"
+                            class="oe_highlight" id="approve_cancel"/>
+                    <!--                    <button name="action_confirm"-->
+                    <!--                            type="object" groups="ezp_cash_collection.group_cash_manager1"-->
+                    <!--                            string="Confirm"-->
+                    <!--                            class="oe_highlight" id="approve_con"/>-->
+                    <button name="action_statement"
+                            type="object" groups="ezp_cash_collection.group_cash_user"
+                            string="PRINT STATEMENT"
+                            class="oe_highlight" id="approve_stmt"/>
+                    <button name="action_statement_cashier"
+                            type="object" groups="ezp_cash_collection.group_cash_manager1"
+                            string="PRINT STATEMENT CASHIER"
+                            class="oe_highlight" id="approve_stmt1"/>
+                    <field name="state" select="2" widget="statusbar"
+                           statusbar_visible="draft,validate,cancelled"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group colspan="4" col="4">
+                        <field name="payment_type"/>
+                        <field name="user_id" attrs="{'required':[('state','=','draft')]}"/>
+                        <field name="cashier_id" groups="ezp_cash_collection.group_cash_manager1"/>
+                        <field name="payment_method_id"/>
+                        <field name="partner_type"/>
+                        <field name="collected" invisible="1"/>
+                        <field name="payment_date"/>
+                        <field name="sum_amount"/>
+                        <field name="another_area"/>
+                        <field name="journal_id"/>
+                        <!--                        <field name="journal_id"/>-->
+
+                    </group>
+                    <notebook>
+                        <page name="exec coll" string="Executive Collection">
+                            <field name="partner_invoices" colspan="4" mode="tree,kanban" context="{'default_journal_id':journal_id}"
+                                   widget="section_and_note_one2many">
+                                <tree string="Room Line" editable="bottom">
+                                    <field name="partner_id" domain="[('estimator','=',True)]"/>
+                                    <field name="date"/>
+                                    <field name="check_boolean" invisible="1"/>
+                                    <field name="check_type" invisible="1"
+                                           attrs="{'required':[('check_boolean','=',True)], 'readonly':[('check_boolean','=',False)]}"/>
+                                    <!--                                    <field name="journal_id" attrs="{'required':[('check_boolean','=',False)], 'readonly':[('check_boolean','=',True)]}"/>                                    <field name="journal_id"/>-->
+                                    <field name="journal_id"
+                                           attrs="{'required':[('check_boolean','=',False)], 'readonly':[('check_boolean','=',True)]}"/>
+                                    <field name="balance_amount"/>
+                                    <field name="amount_total"/>
+                                    <field name="payments" widget="many2many_tags" readonly="1" invisible="1"/>
+                                </tree>
+                                <form>
+                                    <group>
+                                    <group>
+                                    <field name="partner_id" domain="[('estimator','=',True)]"/>
+                                    <field name="date"/>
+                                    <field name="check_boolean" invisible="1"/>
+                                    <field name="journal_id" invisible="1"
+                                           attrs="{'required':[('check_boolean','=',False)], 'readonly':[('check_boolean','=',True)]}"/>
+                                    </group>
+                                    <group>
+                                    <field name="balance_amount" invisible="1"/>
+                                    <field name="ar_amount_total"/>
+                                    <field name="amount_total" invisible="1"/>
+                                    </group>
+                                    </group>
+                                </form>
+
+                                <kanban class="o_kanban_mobile">
+                                    <field name="partner_id" domain="[('estimator','=',True)]"/>
+                                    <field name="date"/>
+                                    <field name="check_type"/>
+                                    <field name="amount_total"/>
+                                    <field name="balance_amount"/>
+
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                                                <!--                                                <t t-if="!record.display_type.raw_value">-->
+                                                <div class="row">
+                                                    <div class="col-8">
+                                                        <strong>
+                                                            <span>
+                                                                Estimator:
+                                                                <t t-esc="record.partner_id.value"/>
+                                                            </span>
+                                                        </strong>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <strong>
+
+                                                            <span class="float-right text-right">
+                                                                Date:
+                                                                <t t-esc="record.date.value"/>
+                                                            </span>
+                                                        </strong>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 text-muted">
+
+                                                        <span>
+                                                            Bal Amount:
+                                                            <t t-esc="record.balance_amount.value"/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 text-muted">
+
+                                                        <span>
+                                                            Paid Amount:
+                                                            <t t-esc="record.amount_total.value"/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <!--                                                </t>-->
+                                                <!--                                                <t t-if="record.display_type.raw_value === 'line_section' || record.display_type.raw_value === 'line_note'">-->
+                                                <!--                                                    <div class="row">-->
+                                                <!--                                                        <div class="col-12">-->
+                                                <!--                                                            <span>-->
+                                                <!--                                                                <t t-esc="record.name.value"/>-->
+                                                <!--                                                            </span>-->
+                                                <!--                                                        </div>-->
+                                                <!--                                                    </div>-->
+                                                <!--                                                </t>-->
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+
+
+                            </field>
+
+
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</odoo>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+     <record id="cash_book_info_tree_inherit" model="ir.ui.view">
+        <field name="name">cash.book.info.form</field>
+        <field name="model">cash.book.info</field>
+         <field name="inherit_id" ref="ezp_cash_collection.cash_book_info_tree"/>
+        <field name="arch" type="xml">
+    <xpath expr="//field[@name='partner_id']" position="after">
+        <field name="closed" invisible="1"/>
+    </xpath>
+        </field>
+     </record>
+        <record id="ezp_cash_collection.actions_cash_book_info" model="ir.actions.act_window">
+        <field name="name">Cash Book</field>
+        <field name="res_model">cash.book.info</field>
+        <field name="view_mode">tree</field>
+        <field name="search_view_id" ref="ezp_cash_collection.cash_book_info_search"/>
+        <field name="context">{}</field>
+        <field name="domain">[('closed','=',False)]</field>
+        <!--        <field name="context">{'group_by':'company_id'}</field>-->
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to create a new .
+            </p>
+        </field>
+    </record>
+
+
+
+<!--    <record id="cash_book_info_tree" model="ir.ui.view">-->
+<!--        <field name="name">cash.book.info.tree</field>-->
+<!--        <field name="model">cash.book.info</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <tree create="0" editable="top">-->
+<!--                <field name="id" invisible="1"/>-->
+<!--                <field name="date" readonly="1"/>-->
+<!--                <field name="partner_id" invisible="1"/>-->
+
+
+    <record id="cash_book_closing_tree" model="ir.ui.view">
+        <field name="name">cash.book.closing.tree</field>
+        <field name="model">cash.book.closing</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" string="Name"/>
+                <field name="date"/>
+            </tree>
+        </field>
+    </record>
+
+        <record id="cash_book_closing_form" model="ir.ui.view">
+        <field name="name">cash.book.closing.form</field>
+        <field name="model">cash.book.closing</field>
+        <field name="arch" type="xml">
+            <form string="Today Collection">
+                <header>
+                    <button name="action_cash_book_close" string="Cash Book Day Close" type="object" states="draft" class="oe_highlight" />
+
+
+                                        <field name="state" select="2" widget="statusbar"
+                                               statusbar_visible="draft,validate,cancelled"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="date" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="today_cash_lines" string="Today Cash Book Lines"
+                        >
+                            <field name="today_cash_lines">
+                                <tree string="Lines" editable="bottom">
+                                    <field name="payment_type"/>
+                                    <field name="description"/>
+                                    <field name="account"/>
+                                    <field name="debit"/>
+                                    <field name="credit"/>
+                                    <field name="balance"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+
+
+
+
+    <record id="action_cash_book_closing" model="ir.actions.act_window">
+        <field name="name">Cash Book Closing</field>
+        <field name="res_model">cash.book.closing</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+    </record>
+      <menuitem name="Cash Book Closing"
+              id="menu_cash_bk_closing" sequence="10"
+              parent="ezp_cash_collection.menu_chq_main"
+              action="action_cash_book_closing"/>
+
+<!--     <record id="inter_branch_transfer_forms_form" model="ir.ui.view">-->
+<!--        <field name="name">inter.branch.transfer.form</field>-->
+<!--        <field name="model">inter.branch.transfer</field>-->
+<!--         <field name="inherit_id" ref="ezp_cash_collection.inter_branch_transfer_forms"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--              <xpath expr="//field[@name='invoice_id']">-->
+<!--                  <field name="vehicle_no"/>-->
+<!--              </xpath>-->
+<!--                      <xpath expr="//field[@name='inter_company_lines']/tree//field[@name='uom_id']" position="after">-->
+<!--                          <field name="product_hsn_code" />-->
+<!--                          <field name="tax_ids" widget="many2many_tags"/>-->
+<!--                      </xpath>-->
+<!--        </field>-->
+<!--     </record>-->
+
+
+<!-- <record id="inter_branch_transfer_forms" model="ir.ui.view">-->
+<!--        <field name="name">inter.branch.transfer.form</field>-->
+<!--        <field name="model">inter.branch.transfer</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <form string="Bank Transfer">-->
+    
+    
+    
+    <record id="company_expenses_report_form" model="ir.ui.view">
+        <field name="name">company.expenses.report.form</field>
+        <field name="model">company.expenses.report</field>
+        <field name="arch" type="xml">
+            <form string="Today Collection">
+                <header>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="from_date" />
+                            <field name="to_date" />
+                            <field name="description"/>
+                            <field name="company_id" invisible="1"/>
+                        </group>
+
+
+                    </group>
+                      <footer>
+<!--                        <button name="print_report" string="Ledger Tree"  type="object" class="btn-primary"/>-->
+                        <button name="print_reports" string="Expences Print"  type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel" />
+                    </footer>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="action_company_expenses_report" model="ir.actions.act_window">
+        <field name="name">Company Expenses Report</field>
+        <field name="res_model">company.expenses.report</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="context">{}</field>
+        <field name="target">new</field>
+
+    </record>
+
+
+    <menuitem name="Company Expenses Report" id="menu_exp_pdg"
+              action="action_company_expenses_report" sequence="9"
+              parent="ezp_cash_collection.menu_chq_main"/>
+
+
+</odoo>
